@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Descent Visual Lab</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- KaTeX for beautiful math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+</head>
+
+<body>
+    <header class="hero">
+        <h1>Understanding Gradient Descent </h1>
+        <p class="subtitle">Linear Regression Visual Lab: Watch how error reduces mathematically step-by-step</p>
+    </header>
+
+    <main class="container">
+        <section class="dataset-panel card">
+            <h2><i class="icon-table"></i> Training Dataset</h2>
+            <p>Our goal is to find the best-fit line for this data:</p>
+            <table class="math-table sample-table">
+                <thead>
+                    <tr>
+                        <th>Hours (x)</th>
+                        <th>Marks (y)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>6</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="math-model-equation">
+                <p>Model Equation: <span class="latex-render">ŷ = mx + c</span></p>
+                <small>Where \( m \) is slope and \( c \) is intercept.</small>
+
+                <div style="margin-top: 1.5rem;">
+                    <p>Cost Function (MSE): <span class="latex-render">\[ J = \frac{1}{n} \sum (y - \hat{y})^2 \]</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="controls-panel card">
+            <h2><i class="icon-sliders"></i> Configuration</h2>
+            <div class="input-group">
+                <label for="initial-m">Initial m (Slope):</label>
+                <input type="number" id="initial-m" value="0" step="0.1">
+            </div>
+            <div class="input-group">
+                <label for="initial-c">Initial c (Intercept):</label>
+                <input type="number" id="initial-c" value="0" step="0.1">
+            </div>
+            <div class="input-group">
+                <label for="learning-rate">Learning Rate (α):</label>
+                <input type="number" id="learning-rate" value="0.1" min="0.001" max="1" step="0.01">
+            </div>
+            <div class="input-group">
+                <label for="max-iterations">Max Iterations:</label>
+                <input type="number" id="max-iterations" value="100" min="1" max="1000">
+            </div>
+            <div class="input-group">
+                <label for="animation-speed">Animation Speed (ms):</label>
+                <input type="range" id="animation-speed" min="100" max="2000" value="500">
+                <span id="speed-value">500ms</span>
+            </div>
+            <div class="button-group">
+                <button id="run-one" class="btn-primary">Run One Iteration</button>
+                <button id="run-all" class="btn-secondary">Run All Iterations</button>
+                <button id="reset" class="btn-outline">Reset</button>
+            </div>
+        </section>
+
+        <section class="visualizations-panel">
+            <div class="visual-card card">
+                <h3>Regression Line</h3>
+                <canvas id="regressionChart"></canvas>
+            </div>
+            <div class="visual-card card">
+                <h3>Cost Function History</h3>
+                <canvas id="costChart"></canvas>
+            </div>
+        </section>
+
+        <section class="explanation-box card">
+            <h3><i class="icon-info"></i> Insights</h3>
+            <p id="insight-text">Set your parameters and click "Run One Iteration" to start the learning process.</p>
+        </section>
+
+        <section class="math-panel card">
+            <h2>Detailed Mathematical Breakdown</h2>
+            <div id="math-iterations-container">
+                <div class="placeholder-msg">Mathematical derivation will appear here once you start the iteration.
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <template id="iteration-template">
+        <div class="iteration-step">
+            <div class="iteration-header">Iteration #<span class="iter-num"></span></div>
+
+            <div class="math-step">
+                <h4>Step 1: Current Parameters</h4>
+                <div class="math-block step1-calc">
+                    <!-- LaTeX injected here -->
+                </div>
+            </div>
+
+            <div class="math-step">
+                <h4>Step 2: Prediction Table</h4>
+                <div class="table-container">
+                    <table class="math-table">
+                        <thead>
+                            <tr>
+                                <th>\( x \)</th>
+                                <th>\( y \)</th>
+                                <th>\( \hat{y} = mx + c \)</th>
+                                <th>\( y - \hat{y} \)</th>
+                                <th>\( (y - \hat{y})^2 \)</th>
+                                <th>\( x(y - \hat{y}) \)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+                            <!-- Rows inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="math-step">
+                <h4>Step 3: Cost Calculation (MSE)</h4>
+                <div class="math-formula">
+                    \[ J(m,c) = \frac{1}{n} \sum_{i=1}^n (y_i - \hat{y}_i)^2 \]
+                </div>
+                <div class="math-derivation step3-calc">
+                    <p>\( \sum(y-\hat{y})^2 = <span class="calc-sum-sq"></span> \)</p>
+                    <p>\( J = \frac{<span class="calc-sum-sq-val"></span>}{3} = <span class="calc-j highlight"></span>
+                        \)</p>
+                </div>
+            </div>
+
+            <div class="math-step">
+                <h4>Step 4: Gradient Calculation</h4>
+                <div class="math-formula-grid">
+                    <div class="step4-calc-m">
+                        <p>\[ \frac{\partial J}{\partial m} = -\frac{2}{n} \sum x(y-\hat{y}) \]</p>
+                        <p>\( \sum x(y-\hat{y}) = <span class="calc-sum-x-err"></span> \)</p>
+                        <p>\( \frac{\partial J}{\partial m} = -\frac{2}{3} \times (<span
+                                class="calc-sum-x-err-val"></span>) = <span class="calc-dm highlight"></span> \)</p>
+                    </div>
+                    <div class="step4-calc-c">
+                        <p>\[ \frac{\partial J}{\partial c} = -\frac{2}{n} \sum (y-\hat{y}) \]</p>
+                        <p>\( \sum (y-\hat{y}) = <span class="calc-sum-err"></span> \)</p>
+                        <p>\( \frac{\partial J}{\partial c} = -\frac{2}{3} \times (<span
+                                class="calc-sum-err-val"></span>) = <span class="calc-dc highlight"></span> \)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="math-step">
+                <h4>Step 5: Parameter Update</h4>
+                <div class="math-update step5-calc">
+                    <p>\[ m_{new} = m_{old} - \alpha \frac{\partial J}{\partial m} \]</p>
+                    <p>\[ m_{new} = <span class="calc-m-old"></span> - (<span class="alpha-val"></span> \times <span
+                            class="calc-dm"></span>) = <span class="calc-m-new highlight"></span> \]</p>
+                    <br>
+                    <p>\[ c_{new} = c_{old} - \alpha \frac{\partial J}{\partial c} \]</p>
+                    <p>\[ c_{new} = <span class="calc-c-old"></span> - (<span class="alpha-val"></span> \times <span
+                            class="calc-dc"></span>) = <span class="calc-c-new highlight"></span> \]</p>
+                </div>
+            </div>
+
+            <div class="math-step convergence-msg" style="display:none;">
+                <div class="alert alert-success">
+                    Model Converged! Gradient is below threshold.
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
