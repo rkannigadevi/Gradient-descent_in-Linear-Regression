@@ -56,6 +56,36 @@
             </div>
         </section>
 
+        <section class="algorithm-steps-panel card">
+            <h2><i class="icon-repeat"></i> Algorithm Process</h2>
+            <div class="educational-preamble">
+                <p>From the sample dataset, it is clearly known that the relation is roughly:</p>
+                <div class="math-logic-equation">\( y = 2x \)</div>
+                <p>But assume the machine does <strong>NOT</strong> know this.</p>
+
+                <div class="step-zero">
+                    <strong>Step 0: Initialize Values (Blind Guess)</strong>
+                    <p>Let’s start with wrong values:</p>
+                    <div class="math-logic-equation">\( m = 0, \quad c = 0 \)</div>
+                    <p>So the initial model is: <span class="latex-render">\(\hat{y} = 0\)</span></p>
+                </div>
+            </div>
+
+            <p class="mt-1">Gradient Descent keeps repeating:</p>
+            <ul class="steps-list">
+                <li><span class="step-badge">1</span> Compute predictions</li>
+                <li><span class="step-badge">2</span> Compute error</li>
+                <li><span class="step-badge">3</span> Compute gradients</li>
+                <li><span class="step-badge">4</span> Update parameters</li>
+            </ul>
+
+            <div class="eventually-target">
+                <p>Eventually:</p>
+                <div class="math-logic-equation">\( m \approx 2, \quad c \approx 0 \)</div>
+                <div class="math-logic-equation">\( J(m,c) \approx 0 \)</div>
+            </div>
+        </section>
+
         <section class="controls-panel card">
             <h2><i class="icon-sliders"></i> Configuration</h2>
             <div class="input-group">
